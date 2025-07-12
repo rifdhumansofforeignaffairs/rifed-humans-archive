@@ -258,6 +258,33 @@ function showView(viewName) {
     document.getElementById(viewName + "View").classList.add("active");
     
     if (viewName === "analytics") {
-        generateStateChart(); // Add this line
+        updateAnalytics(); // This will populate the numbers
+        generateStateChart(); // Keep this for later
     }
+}
+function updateAnalytics() {
+    const totalStories = allStories.length;
+    const totalYears = allStories.reduce((sum, story) => sum + story.yearsOfService, 0);
+    const avgYears = totalStories > 0 ? (totalYears / totalStories).toFixed(1) : 0;
+    const seniorPersonnel = allStories.filter(story => story.yearsOfService >= 15).length;
+    const overseasAssignments = allStories.filter(story => 
+        story.serviceType === "Foreign Service" && 
+        story.hadOnwardAssignment === "Yes" && 
+        story.onwardAssignmentType === "Overseas"
+    ).length;
+    
+    // Update analytics metrics
+    const analyticsTotal = document.getElementById("analyticsTotal");
+    const analyticsYears = document.getElementById("analyticsYears");
+    const avgYearsElement = document.getElementById("avgYears");
+    const analyticsSenior = document.getElementById("analyticsSenior");
+    const seniorPercent = document.getElementById("seniorPercent");
+    const analyticsOverseas = document.getElementById("analyticsOverseas");
+    
+    if (analyticsTotal) analyticsTotal.textContent = totalStories;
+    if (analyticsYears) analyticsYears.textContent = totalYears;
+    if (avgYearsElement) avgYearsElement.textContent = `Avg: ${avgYears} years per person`;
+    if (analyticsSenior) analyticsSenior.textContent = seniorPersonnel;
+    if (seniorPercent) seniorPercent.textContent = totalStories > 0 ? `${((seniorPersonnel / totalStories) * 100).toFixed(1)}% of total` : "0% of total";
+    if (analyticsOverseas) analyticsOverseas.textContent = overseasAssignments;
 }
