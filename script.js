@@ -38,32 +38,32 @@ async function loadStories() {
         
         const rows = data.values.slice(1);
         
-     allStories = rows.map((row, index) => ({
-    id: index + 1,
-    title: row[1] || "Untitled Story",
-    yearsOfService: parseInt(row[2]) || 0,
-    lastPosition: row[3] || "",
-    agency: row[4] || "",
-    departureYear: row[5] || "2025",
-    regionRIFd: row[6] || "",
-    homeState: row[7] || "",
-    serviceType: row[8] || "",
-    expertise: row[10] || "",
-    languagesSpoken: row[11] || "",
-    impactStatement: row[12] || "",
-    serviceBackground: row[13] || "",
-    consequenceNarrative: row[14] || "",
-    policyImplications: row[15] || "",
-    expertiseReplaceable: row[16] || "",
-    replacementCost: row[17] || "",
-    networkRebuildTime: row[18] || "",
-    hadOnwardAssignment: row[19] || "",
-    onwardAssignmentType: row[20] || "",
-    submissionDate: row[0] ? new Date(row[0]).toISOString().split("T")[0] : new Date().toISOString().split("T")[0]
-}));
+        allStories = rows.map((row, index) => ({
+            id: index + 1,
+            title: row[1] || "Untitled Story",
+            yearsOfService: parseInt(row[2]) || 0,
+            lastPosition: row[3] || "",
+            agency: row[4] || "",
+            departureYear: row[5] || "2025",
+            regionRIFd: row[6] || "",
+            homeState: row[7] || "",
+            serviceType: row[8] || "",
+            expertise: row[10] || "",
+            languagesSpoken: row[11] || "",
+            impactStatement: row[12] || "",
+            serviceBackground: row[13] || "",
+            consequenceNarrative: row[14] || "",
+            policyImplications: row[15] || "",
+            expertiseReplaceable: row[16] || "",
+            replacementCost: row[17] || "",
+            networkRebuildTime: row[18] || "",
+            hadOnwardAssignment: row[19] || "",
+            onwardAssignmentType: row[20] || "",
+            submissionDate: row[0] ? new Date(row[0]).toISOString().split("T")[0] : new Date().toISOString().split("T")[0]
+        }));
         
         allStories = allStories.filter(story => story.title && story.title !== "Untitled Story");
-        console.log("Final stories:", allStories);
+        console.log("Final stories with ALL fields:", allStories);
         
     } catch (error) {
         console.error("Error loading stories:", error);
