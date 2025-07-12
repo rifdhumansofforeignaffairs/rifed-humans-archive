@@ -38,7 +38,7 @@ async function loadStories() {
     }
 
     try {
-        const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values/Sheet1?key=${CONFIG.API_KEY}`;
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${Form%20Responses%201}/values/Sheet1?key=${AIzaSyCW81U8mptSsw9k1hkTXTtSGDkI4uUEPnk}`;
         const response = await fetch(url);
         
         if (!response.ok) {
