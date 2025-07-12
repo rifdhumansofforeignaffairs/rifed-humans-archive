@@ -288,3 +288,37 @@ function updateAnalytics() {
     if (seniorPercent) seniorPercent.textContent = totalStories > 0 ? `${((seniorPersonnel / totalStories) * 100).toFixed(1)}% of total` : "0% of total";
     if (analyticsOverseas) analyticsOverseas.textContent = overseasAssignments;
 }
+function generateStateChart() {
+    console.log("generateStateChart called");
+    console.log("allStories:", allStories);
+    
+    const stateCounts = {};
+    allStories.forEach(story => {
+        console.log("Story home state:", story.homeState);
+        if (story.homeState) {
+            stateCounts[story.homeState] = (stateCounts[story.homeState] || 0) + 1;
+        }
+    });
+    
+    console.log("State counts:", stateCounts);
+    
+    const chartContainer = document.getElementById('stateChart');
+    console.log("Chart container found:", chartContainer);
+    
+    if (chartContainer) {
+        const entries = Object.entries(stateCounts);
+        console.log("State entries:", entries);
+        
+        if (entries.length > 0) {
+            chartContainer.innerHTML = entries.map(([state, count]) => `
+                <div style="border: 1px solid #ccc; padding: 10px; margin: 5px;">
+                    <strong>${state}:</strong> ${count} personnel
+                </div>
+            `).join('');
+        } else {
+            chartContainer.innerHTML = '<p>No state data found</p>';
+        }
+    } else {
+        console.log("stateChart element not found in HTML");
+    }
+}
