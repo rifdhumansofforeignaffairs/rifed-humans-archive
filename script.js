@@ -54,6 +54,7 @@ async function loadStories() {
             serviceBackground: row[13] || "",
             consequenceNarrative: row[14] || "",
             policyImplications: row[15] || "",
+            replacementCost: row[17] || "",
             submissionDate: row[0] ? new Date(row[0]).toISOString().split("T")[0] : new Date().toISOString().split("T")[0]
         }));
         
@@ -88,11 +89,46 @@ function updateDisplay() {
 function updateQuickStats() {
     const totalStories = allStories.length;
     const totalYears = allStories.reduce((sum, story) => sum + story.yearsOfService, 0);
+    const totalCost = calculateTotalCost();
     
     document.getElementById("totalStories").textContent = totalStories;
     document.getElementById("totalYears").textContent = totalYears;
-    document.getElementById("totalLanguages").textContent = "0";
-    document.getElementById("totalCost").textContent = "$0";
+    document.getElementById("totalLanguages").textContent = extractLanguages().length;
+    document.getElementById("totalCost").textContent = formatCost(totalCost);
+}
+
+function extractLanguages() {
+    const allLanguages = [];
+    allStories.forEach(story => {
+        if (story.languagesSpoken) {
+            const languages = story.languagesSpoken.split(",").map(lang => {
+                return lang.trim().split("(")[0].trim();
+            });
+            allLanguages.push(...languages);
+        }
+    });
+    return [...new Set(allLanguages.filter(lang => lang.length > 0))];
+}
+
+function calculateTotalCost() {
+    return allStories.reduce((total, story) => {
+        if (story.replacementCost) {
+            const text = story.replacementCost.toLowerCase();
+            const match = text.match(/\$?([\d,]+)\s*k/i);
+            if (match) {
+                const cost = parseInt(match[1].replace(/,/g, ""));
+                return total + (cost * 1000);
+            }
+        }
+        return total;
+    }, 0);
+}
+
+function formatCost(cost) {
+    if (cost === 0) return "$0";
+    if (cost >= 1000000) return `$${(cost / 1000000).toFixed(1)}M+`;
+    if (cost >= 1000) return `$${(cost / 1000).toFixed(0)}K+`;
+    return `$${cost.toLocaleString()}`;
 }
 
 function filterAndDisplayStories() {
