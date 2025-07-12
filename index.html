@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIF'd Humans of Foreign Affairs - Documentary Archive</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-main">
+                    <i class="fas fa-globe"></i>
+                    <div>
+                        <h1>RIF'd Humans of Foreign Affairs</h1>
+                        <p class="subtitle">Documentary Archive</p>
+                    </div>
+                </div>
+                <p class="description">
+                    An initiative documenting personal experiences and human impact of Reduction in Force and related actions across foreign affairs agencies.
+                </p>
+                
+                <!-- Quick Stats -->
+                <div class="stats-grid" id="quickStats">
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <div class="stat-number" id="totalStories">0</div>
+                            <div class="stat-label">Stories Collected</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-calendar"></i>
+                        <div>
+                            <div class="stat-number" id="totalYears">0</div>
+                            <div class="stat-label">Years of Experience Lost</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-globe"></i>
+                        <div>
+                            <div class="stat-number" id="totalLanguages">0</div>
+                            <div class="stat-label">Languages Affected</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-chart-line"></i>
+                        <div>
+                            <div class="stat-number" id="totalCost">$0</div>
+                            <div class="stat-label">Est. Replacement Cost</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Legal Info -->
+                <div class="legal-info">
+                    <div class="legal-section">
+                        <h4>About This Initiative:</h4>
+                        <p>This is a private, independent platform created to document the human impact of Reduction in Force and related actions across foreign affairs agencies. The stories collected here are intended to inform about the skills, expertise, and institutional knowledge affected by RIFs, as told from the practitioners' perspective.</p>
+                    </div>
+                    <div class="legal-section">
+                        <h4>Legal Disclaimer:</h4>
+                        <p>Users are solely responsible for their own information and submissions. This platform and its creators assume no liability for content accuracy, completeness, or consequences of use. All submissions are voluntary and made at the user's own discretion and risk. Stories shared here represent individual experiences and perspectives. All submissions must be personal and contain strictly unclassified and public information only.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="nav-buttons">
+                    <button class="nav-btn active" onclick="showView('browse')" id="browseBtn">
+                        <i class="fas fa-eye"></i>
+                        Browse Stories (<span id="storyCount">0</span>)
+                    </button>
+                    <button class="nav-btn" onclick="showView('analytics')" id="analyticsBtn">
+                        <i class="fas fa-chart-bar"></i>
+                        Impact Analytics
+                    </button>
+                </div>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLScnp3d4Ksk8sBElTUpLiA2R-wbDueV5_tEMR0MvitijRgECfQ/viewform?usp=header" target="_blank" class="submit-btn">
+                    <i class="fas fa-plus"></i>
+                    Share Your Story
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Browse Stories View -->
+            <div id="browseView" class="view active">
+                <!-- Search and Filters -->
+                <div class="search-section">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search stories, expertise, regions, agencies...">
+                    </div>
+                    <div class="filter-controls">
+                        <select id="sortSelect">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="experience">Most Experience</option>
+                            <option value="title">By Title</option>
+                        </select>
+                        <button onclick="toggleFilters()" id="filterToggle">
+                            Filters <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <button onclick="exportData()">
+                            <i class="fas fa-download"></i>
+                            Export Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Advanced Filters -->
+                <div id="advancedFilters" class="filters-section" style="display: none;">
+                    <select id="regionFilter">
+                        <option value="">All Locations</option>
+                    </select>
+                    <select id="yearsFilter">
+                        <option value="">All Years of Service</option>
+                        <option value="0-4">0-4 years</option>
+                        <option value="5-10">5-10 years</option>
+                        <option value="10-20">10-20 years</option>
+                        <option value="20+">20+ years</option>
+                    </select>
+                    <select id="agencyFilter">
+                        <option value="">All Agencies</option>
+                    </select>
+                    <select id="serviceFilter">
+                        <option value="">All Service Types</option>
+                        <option value="Foreign Service">Foreign Service</option>
+                        <option value="Civil Service">Civil Service</option>
+                        <option value="Contractor">Contractor</option>
+                        <option value="Volunteer">Volunteer</option>
+                    </select>
+                    <input type="text" id="expertiseFilter" placeholder="Filter by expertise...">
+                </div>
+
+                <!-- Sample Data Notice -->
+                <div class="notice">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Note:</strong> Real story submissions will appear here once people start using your form. 
+                        The system is ready to collect and display stories automatically.
+                    </div>
+                </div>
+
+                <!-- Stories Container -->
+                <div id="storiesContainer" class="stories-container">
+                    <div class="no-stories">
+                        <i class="fas fa-file-text"></i>
+                        <h3>No stories yet</h3>
+                        <p>Stories will appear here as people submit them through your form.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics View -->
+            <div id="analyticsView" class="view">
+                <h2>Impact Analytics Dashboard</h2>
+                
+                <!-- Key Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card blue">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <div class="metric-title">Total Personnel RIF'd</div>
+                            <div class="metric-value" id="analyticsTotal">0</div>
+                        </div>
+                    </div>
+                    <div class="metric-card red">
+                        <i class="fas fa-calendar"></i>
+                        <div>
+                            <div class="metric-title">Combined Years Lost</div>
+                            <div class="metric-value" id="analyticsYears">0</div>
+                            <div class="metric-subtitle" id="avgYears">Avg: 0 years per person</div>
+                        </div>
+                    </div>
+                    <div class="metric-card green">
+                        <i class="fas fa-briefcase"></i>
+                        <div>
+                            <div class="metric-title">Senior Personnel (15+ Years)</div>
+                            <div class="metric-value" id="analyticsSenior">0</div>
+                            <div class="metric-subtitle" id="seniorPercent">0% of total</div>
+                        </div>
+                    </div>
+                    <div class="metric-card purple">
+                        <i class="fas fa-map-marker"></i>
+                        <div>
+                            <div class="metric-title">Overseas Assignments Lost</div>
+                            <div class="metric-value" id="analyticsOverseas">0</div>
+                            <div class="metric-subtitle">Confirmed upcoming postings</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Container -->
+                <div id="chartsContainer">
+                    <!-- Charts will be generated here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Indicator -->
+    <div id="loadingIndicator" class="loading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Loading stories...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
