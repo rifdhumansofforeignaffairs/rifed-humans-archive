@@ -2,7 +2,7 @@
 const CONFIG = {
     SHEET_ID: '1bNwTlOZeK3yKHCU8VTVRswFFDxqphAHUkLDuz4gaimU',
     API_KEY: 'AIzaSyCW81U8mptSsw9k1hkTXTtSGDkI4uUEPnk',
-    FORM_URL: 'https://docs.google.com/spreadsheets/d/1bNwTlOZeK3yKHCU8VTVRswFFDxqphAHUkLDuz4gaimU/edit?resourcekey&gid=1193778367#gid=1193778367'
+    FORM_URL: 'https://forms.gle/KAFno9xnPoQqbhro6'
 };
 
 // Global variables
