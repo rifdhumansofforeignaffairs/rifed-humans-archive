@@ -389,4 +389,34 @@ function debounce(func, wait) {
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
     };
+    function toggleFilters() {
+    const filters = document.getElementById("advancedFilters");
+    const toggle = document.getElementById("filterToggle");
+    const icon = toggle.querySelector("i");
+    
+    if (filters && toggle && icon) {
+        if (filters.style.display === "none" || !filters.style.display) {
+            filters.style.display = "grid";
+            icon.className = "fas fa-chevron-up";
+        } else {
+            filters.style.display = "none";
+            icon.className = "fas fa-chevron-down";
+        }
+    }
+}
+
+function exportData() {
+    if (allStories.length === 0) {
+        alert("No data to export");
+        return;
+    }
+    
+    const dataStr = JSON.stringify(allStories, null, 2);
+    const dataBlob = new Blob([dataStr], {type: "application/json"});
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `rifed-humans-data-${new Date().toISOString().split("T")[0]}.json`;
+    link.click();
+}
 }
