@@ -1,56 +1,45 @@
 const CONFIG = {
     SHEET_ID: "1bNwTlOZeK3yKHCU8VTVRswFFDxqphAHUkLDuz4gaimU",
-    API_KEY: "AIzaSyCW81U8mptSsw9k1hkTXTtSGDkI4uUEPnk",
-    FORM_URL: "https://docs.google.com/forms/d/e/1FAIpQLScnp3d4Ksk8sBElTUpLiA2R-wbDueV5_tEMR0MvitijRgECfQ/viewform?usp=header"
+    API_KEY: "AIzaSyCW81U8mptSsw9k1hkTXTtSGDkI4uUEPnk"
 };
 
 document.addEventListener("DOMContentLoaded", function() {
-    console.log("App starting...");
-    loadAndDisplayStories();
-});
-
-async function loadAndDisplayStories() {
-    try {
-        const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values/Form%20Responses%201?key=${CONFIG.API_KEY}`;
-        const response = await fetch(url);
-        const data = await response.json();
+    console.log("Loading stories...");
+    
+    // Use CORS proxy to bypass API restrictions
+    const proxyUrl = "https://api.allorigins.win/raw?url=";
+    const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values/Form%20Responses%201?key=${CONFIG.API_KEY}`;
+    
+    fetch(proxyUrl + encodeURIComponent(apiUrl))
+    .then(response => response.json())
+    .then(data => {
+        console.log("Data received:", data);
         
         if (data.values && data.values.length > 1) {
-            const stories = data.values.slice(1).map((row, index) => ({
-                title: row[1] || "Untitled",
-                years: row[2] || "0", 
-                agency: row[4] || "Unknown",
-                position: row[3] || "",
-                impact: row[12] || ""
-            }));
-            
+            const stories = data.values.slice(1);
             displayStories(stories);
-            updateStats(stories);
+            document.getElementById("totalStories").textContent = stories.length;
         }
-    } catch (error) {
+    })
+    .catch(error => {
         console.error("Error:", error);
-    }
-}
+        document.getElementById("storiesContainer").innerHTML = `<p>Error loading stories: ${error.message}</p>`;
+    });
+});
 
 function displayStories(stories) {
     const container = document.getElementById("storiesContainer");
     if (container) {
-        container.innerHTML = stories.map(story => `
-            <div class="story-card">
-                <h3>${story.title}</h3>
-                <p><strong>Years:</strong> ${story.years} | <strong>Agency:</strong> ${story.agency}</p>
-                <p><strong>Position:</strong> ${story.position}</p>
-                <p><strong>Impact:</strong> ${story.impact}</p>
+        container.innerHTML = stories.map((row, index) => `
+            <div style="border: 1px solid #ddd; padding: 15px; margin: 10px; border-radius: 5px;">
+                <h3>${row[1] || "Untitled Story"}</h3>
+                <p><strong>Years of Service:</strong> ${row[2] || "Unknown"}</p>
+                <p><strong>Agency:</strong> ${row[4] || "Unknown"}</p>
+                <p><strong>Position:</strong> ${row[3] || "Unknown"}</p>
+                <p><strong>Impact:</strong> ${row[12] || "No impact statement"}</p>
             </div>
         `).join("");
     }
-}
-
-function updateStats(stories) {
-    const totalYears = stories.reduce((sum, story) => sum + parseInt(story.years || 0), 0);
-    
-    document.getElementById("totalStories").textContent = stories.length;
-    document.getElementById("totalYears").textContent = totalYears;
 }
 
 function showView(viewName) {
