@@ -258,8 +258,9 @@ function showView(viewName) {
     document.getElementById(viewName + "View").classList.add("active");
     
     if (viewName === "analytics") {
-        updateAnalytics(); // This will populate the numbers
-        generateStateChart(); // Keep this for later
+        updateAnalytics();
+        // Remove this line temporarily until we add the function
+        // generateStateChart();
     }
 }
 function updateAnalytics() {
