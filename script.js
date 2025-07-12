@@ -324,7 +324,7 @@ function updateAnalytics() {
     }
 }
 window.generateStateChart = function() {
-    console.log("generateStateChart called");
+    console.log("Manual function test");
     const stateCounts = {};
     allStories.forEach(story => {
         if (story.homeState) {
@@ -335,21 +335,8 @@ window.generateStateChart = function() {
     
     const chartContainer = document.getElementById('stateChart');
     if (chartContainer) {
-        const entries = Object.entries(stateCounts);
-        if (entries.length > 0) {
-            chartContainer.innerHTML = entries.map(([state, count]) => 
-                `<div class="chart-item">
-                    <div class="chart-label">${state}</div>
-                    <div class="chart-bar-container">
-                        <div class="chart-bar">
-                            <div class="chart-bar-fill" style="width: ${(count / Math.max(...entries.map(([,c]) => c))) * 100}%"></div>
-                        </div>
-                        <div class="chart-value">${count} personnel</div>
-                    </div>
-                </div>`
-            ).join('');
-        } else {
-            chartContainer.innerHTML = '<p>No state data found</p>';
-        }
+        chartContainer.innerHTML = Object.entries(stateCounts).map(([state, count]) => 
+            `<div>${state}: ${count}</div>`
+        ).join('');
     }
 }
