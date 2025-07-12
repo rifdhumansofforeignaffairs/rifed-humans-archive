@@ -175,9 +175,6 @@ function calculateTotalCost() {
         return total;
     }, 0);
 }
-        return total;
-    }, 0);
-}
 function debugCosts() {
     allStories.forEach((story, index) => {
         if (story.replacementCost) {
