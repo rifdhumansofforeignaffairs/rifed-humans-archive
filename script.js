@@ -256,4 +256,8 @@ function showView(viewName) {
     
     document.querySelectorAll(".view").forEach(view => view.classList.remove("active"));
     document.getElementById(viewName + "View").classList.add("active");
+    
+    if (viewName === "analytics") {
+        generateStateChart(); // Add this line
+    }
 }
