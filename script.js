@@ -289,7 +289,7 @@ function updateAnalytics() {
     if (seniorPercent) seniorPercent.textContent = totalStories > 0 ? `${((seniorPersonnel / totalStories) * 100).toFixed(1)}% of total` : "0% of total";
     if (analyticsOverseas) analyticsOverseas.textContent = overseasAssignments;
 }
-function generateStateChart() {
+ function generateStateChart() {
     console.log("generateStateChart called");
     console.log("allStories:", allStories);
     
