@@ -149,14 +149,32 @@ function extractLanguages() {
 function calculateTotalCost() {
     return allStories.reduce((total, story) => {
         if (story.replacementCost) {
-            const match = story.replacementCost.match(/\$?([\d,]+)/);
-            if (match) {
-                const cost = parseInt(match[1].replace(/,/g, ""));
-                if (story.replacementCost.toLowerCase().includes("m")) return total + (cost * 1000000);
-                if (story.replacementCost.toLowerCase().includes("k")) return total + (cost * 1000);
-                return total + cost;
-            }
+            const text = story.replacementCost.toLowerCase();
+            let storyTotal = 0;
+            
+            // Look for multiple cost patterns in the same text
+            const patterns = [
+                { regex: /\$?([\d,]+)\s*m(?:illion)?/gi, multiplier: 1000000 },     // $2M, 2 million
+                { regex: /\$?([\d,]+)\s*k(?:thousand)?/gi, multiplier: 1000 },      // $500K, 500 thousand  
+                { regex: /\$?([\d,]+)(?:,\d{3})*(?:\s*dollars?)?/gi, multiplier: 1 } // $150,000, 150000
+            ];
+            
+            // Try each pattern and sum up all matches
+            patterns.forEach(pattern => {
+                let match;
+                while ((match = pattern.regex.exec(text)) !== null) {
+                    const cost = parseInt(match[1].replace(/,/g, ''));
+                    if (!isNaN(cost)) {
+                        storyTotal += cost * pattern.multiplier;
+                    }
+                }
+            });
+            
+            return total + storyTotal;
         }
+        return total;
+    }, 0);
+}
         return total;
     }, 0);
 }
