@@ -1,4 +1,4 @@
-const CONFIG = {
+ const CONFIG = {
     SHEET_ID: "1bNwTlOZeK3yKHCU8VTVRswFFDxqphAHUkLDuz4gaimU",
     API_KEY: "AIzaSyCW81U8mptSsw9k1hkTXTtSGDkI4uUEPnk",
     FORM_URL: "https://docs.google.com/forms/d/e/1FAIpQLScnp3d4Ksk8sBElTUpLiA2R-wbDueV5_tEMR0MvitijRgECfQ/viewform?usp=header"
@@ -152,18 +152,16 @@ function calculateTotalCost() {
             const text = story.replacementCost.toLowerCase();
             let storyTotal = 0;
             
-            // Look for multiple cost patterns in the same text
             const patterns = [
-                { regex: /\$?([\d,]+)\s*m(?:illion)?/gi, multiplier: 1000000 },     // $2M, 2 million
-                { regex: /\$?([\d,]+)\s*k(?:thousand)?/gi, multiplier: 1000 },      // $500K, 500 thousand  
-                { regex: /\$?([\d,]+)(?:,\d{3})*(?:\s*dollars?)?/gi, multiplier: 1 } // $150,000, 150000
+                { regex: /\$?([\d,]+)\s*m(?:illion)?/gi, multiplier: 1000000 },
+                { regex: /\$?([\d,]+)\s*k(?:thousand)?/gi, multiplier: 1000 },
+                { regex: /\$?([\d,]+)(?:,\d{3})*(?:\s*dollars?)?/gi, multiplier: 1 }
             ];
             
-            // Try each pattern and sum up all matches
             patterns.forEach(pattern => {
                 let match;
                 while ((match = pattern.regex.exec(text)) !== null) {
-                    const cost = parseInt(match[1].replace(/,/g, ''));
+                    const cost = parseInt(match[1].replace(/,/g, ""));
                     if (!isNaN(cost)) {
                         storyTotal += cost * pattern.multiplier;
                     }
@@ -174,36 +172,6 @@ function calculateTotalCost() {
         }
         return total;
     }, 0);
-}
-function debugCosts() {
-    allStories.forEach((story, index) => {
-        if (story.replacementCost) {
-            console.log(`Story ${index + 1}:`);
-            console.log(`  Original: "${story.replacementCost}"`);
-            
-            const text = story.replacementCost.toLowerCase();
-            let extracted = 0;
-            
-            const patterns = [
-                { regex: /\$?([\d,]+)\s*m(?:illion)?/gi, multiplier: 1000000 },
-                { regex: /\$?([\d,]+)\s*k(?:thousand)?/gi, multiplier: 1000 },
-                { regex: /\$?([\d,]+)(?:,\d{3})*(?:\s*dollars?)?/gi, multiplier: 1 }
-            ];
-            
-            patterns.forEach(pattern => {
-                let match;
-                while ((match = pattern.regex.exec(text)) !== null) {
-                    const cost = parseInt(match[1].replace(/,/g, ''));
-                    if (!isNaN(cost)) {
-                        extracted += cost * pattern.multiplier;
-                        console.log(`  Found: ${match[0]} = $${(cost * pattern.multiplier).toLocaleString()}`);
-                    }
-                }
-            });
-            
-            console.log(`  Total extracted: $${extracted.toLocaleString()}`);
-        }
-    });
 }
 
 function formatCost(cost) {
@@ -415,7 +383,6 @@ function updateAnalytics() {
         story.onwardAssignmentType === "Overseas"
     ).length;
     
-    // Update analytics metrics (these should match the header stats)
     const analyticsTotal = document.getElementById("analyticsTotal");
     const analyticsYears = document.getElementById("analyticsYears");
     const avgYearsElement = document.getElementById("avgYears");
@@ -431,24 +398,7 @@ function updateAnalytics() {
     if (analyticsOverseas) analyticsOverseas.textContent = overseasAssignments;
 }
 
-function escapeHtml(text) {
-    if (!text) return "";
-    const div = document.createElement("div");
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-    function toggleFilters() {
+function toggleFilters() {
     const filters = document.getElementById("advancedFilters");
     const toggle = document.getElementById("filterToggle");
     const icon = toggle.querySelector("i");
@@ -478,4 +428,53 @@ function exportData() {
     link.download = `rifed-humans-data-${new Date().toISOString().split("T")[0]}.json`;
     link.click();
 }
+
+function escapeHtml(text) {
+    if (!text) return "";
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+function debugCosts() {
+    allStories.forEach((story, index) => {
+        if (story.replacementCost) {
+            console.log(`Story ${index + 1}:`);
+            console.log(`  Original: "${story.replacementCost}"`);
+            
+            const text = story.replacementCost.toLowerCase();
+            let extracted = 0;
+            
+            const patterns = [
+                { regex: /\$?([\d,]+)\s*m(?:illion)?/gi, multiplier: 1000000 },
+                { regex: /\$?([\d,]+)\s*k(?:thousand)?/gi, multiplier: 1000 },
+                { regex: /\$?([\d,]+)(?:,\d{3})*(?:\s*dollars?)?/gi, multiplier: 1 }
+            ];
+            
+            patterns.forEach(pattern => {
+                let match;
+                while ((match = pattern.regex.exec(text)) !== null) {
+                    const cost = parseInt(match[1].replace(/,/g, ""));
+                    if (!isNaN(cost)) {
+                        extracted += cost * pattern.multiplier;
+                        console.log(`  Found: ${match[0]} = $${(cost * pattern.multiplier).toLocaleString()}`);
+                    }
+                }
+            });
+            
+            console.log(`  Total extracted: $${extracted.toLocaleString()}`);
+        }
+    });
 }
