@@ -178,6 +178,36 @@ function calculateTotalCost() {
         return total;
     }, 0);
 }
+function debugCosts() {
+    allStories.forEach((story, index) => {
+        if (story.replacementCost) {
+            console.log(`Story ${index + 1}:`);
+            console.log(`  Original: "${story.replacementCost}"`);
+            
+            const text = story.replacementCost.toLowerCase();
+            let extracted = 0;
+            
+            const patterns = [
+                { regex: /\$?([\d,]+)\s*m(?:illion)?/gi, multiplier: 1000000 },
+                { regex: /\$?([\d,]+)\s*k(?:thousand)?/gi, multiplier: 1000 },
+                { regex: /\$?([\d,]+)(?:,\d{3})*(?:\s*dollars?)?/gi, multiplier: 1 }
+            ];
+            
+            patterns.forEach(pattern => {
+                let match;
+                while ((match = pattern.regex.exec(text)) !== null) {
+                    const cost = parseInt(match[1].replace(/,/g, ''));
+                    if (!isNaN(cost)) {
+                        extracted += cost * pattern.multiplier;
+                        console.log(`  Found: ${match[0]} = $${(cost * pattern.multiplier).toLocaleString()}`);
+                    }
+                }
+            });
+            
+            console.log(`  Total extracted: $${extracted.toLocaleString()}`);
+        }
+    });
+}
 
 function formatCost(cost) {
     if (cost === 0) return "$0";
