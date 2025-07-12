@@ -257,10 +257,10 @@ function showView(viewName) {
     document.querySelectorAll(".view").forEach(view => view.classList.remove("active"));
     document.getElementById(viewName + "View").classList.add("active");
     
-    if (viewName === "analytics") {
-        updateAnalytics();
-        // Remove this line temporarily until we add the function
-        // generateStateChart();
+  if (viewName === "analytics") {
+    updateAnalytics();
+    if (window.generateStateChart) {
+        window.generateStateChart();
     }
 }
 function updateAnalytics() {
@@ -321,5 +321,35 @@ function updateAnalytics() {
         }
     } else {
         console.log("stateChart element not found in HTML");
+    }
+}
+window.generateStateChart = function() {
+    console.log("generateStateChart called");
+    const stateCounts = {};
+    allStories.forEach(story => {
+        if (story.homeState) {
+            stateCounts[story.homeState] = (stateCounts[story.homeState] || 0) + 1;
+        }
+    });
+    console.log("State counts:", stateCounts);
+    
+    const chartContainer = document.getElementById('stateChart');
+    if (chartContainer) {
+        const entries = Object.entries(stateCounts);
+        if (entries.length > 0) {
+            chartContainer.innerHTML = entries.map(([state, count]) => 
+                `<div class="chart-item">
+                    <div class="chart-label">${state}</div>
+                    <div class="chart-bar-container">
+                        <div class="chart-bar">
+                            <div class="chart-bar-fill" style="width: ${(count / Math.max(...entries.map(([,c]) => c))) * 100}%"></div>
+                        </div>
+                        <div class="chart-value">${count} personnel</div>
+                    </div>
+                </div>`
+            ).join('');
+        } else {
+            chartContainer.innerHTML = '<p>No state data found</p>';
+        }
     }
 }
