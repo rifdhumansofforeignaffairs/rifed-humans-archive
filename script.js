@@ -364,12 +364,26 @@ function updateAnalytics() {
     const totalYears = allStories.reduce((sum, story) => sum + story.yearsOfService, 0);
     const avgYears = totalStories > 0 ? (totalYears / totalStories).toFixed(1) : 0;
     const seniorPersonnel = allStories.filter(story => story.yearsOfService >= 15).length;
+    const overseasAssignments = allStories.filter(story => 
+        story.serviceType === "Foreign Service" && 
+        story.hadOnwardAssignment === "Yes" && 
+        story.onwardAssignmentType === "Overseas"
+    ).length;
     
-    document.getElementById("analyticsTotal").textContent = totalStories;
-    document.getElementById("analyticsYears").textContent = totalYears;
-    document.getElementById("avgYears").textContent = `Avg: ${avgYears} years per person`;
-    document.getElementById("analyticsSenior").textContent = seniorPersonnel;
-    document.getElementById("seniorPercent").textContent = totalStories > 0 ? `${((seniorPersonnel / totalStories) * 100).toFixed(1)}% of total` : "0% of total";
+    // Update analytics metrics (these should match the header stats)
+    const analyticsTotal = document.getElementById("analyticsTotal");
+    const analyticsYears = document.getElementById("analyticsYears");
+    const avgYearsElement = document.getElementById("avgYears");
+    const analyticsSenior = document.getElementById("analyticsSenior");
+    const seniorPercent = document.getElementById("seniorPercent");
+    const analyticsOverseas = document.getElementById("analyticsOverseas");
+    
+    if (analyticsTotal) analyticsTotal.textContent = totalStories;
+    if (analyticsYears) analyticsYears.textContent = totalYears;
+    if (avgYearsElement) avgYearsElement.textContent = `Avg: ${avgYears} years per person`;
+    if (analyticsSenior) analyticsSenior.textContent = seniorPersonnel;
+    if (seniorPercent) seniorPercent.textContent = totalStories > 0 ? `${((seniorPersonnel / totalStories) * 100).toFixed(1)}% of total` : "0% of total";
+    if (analyticsOverseas) analyticsOverseas.textContent = overseasAssignments;
 }
 
 function escapeHtml(text) {
