@@ -1,8 +1,8 @@
 // Configuration - YOU NEED TO UPDATE THESE
 const CONFIG = {
-    SHEET_ID: '1bNwTlOZeK3yKHCU8VTVRswFFDxqphAHUkLDuz4gaimU',
-    API_KEY: 'AIzaSyCW81U8mptSsw9k1hkTXTtSGDkI4uUEPnk',
-    FORM_URL: 'https://docs.google.com/forms/d/e/1FAIpQLScnp3d4Ksk8sBElTUpLiA2R-wbDueV5_tEMR0MvitijRgECfQ/viewform?usp=header'
+    SHEET_ID: "1bNwTlOZeK3yKHCU8VTVRswFFDxqphAHUkLDuz4gaimU",
+    API_KEY: "AIzaSyCW81U8mptSsw9k1hkTXTtSGDkI4uUEPnk",
+    FORM_URL: "https://docs.google.com/forms/d/e/1FAIpQLScnp3d4Ksk8sBElTUpLiA2R-wbDueV5_tEMR0MvitijRgECfQ/viewform?usp=header"
 };
 
 // Global variables
