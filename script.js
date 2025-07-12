@@ -31,7 +31,7 @@ async function initializeApp() {
 
 // Load stories from Google Sheets
 async function loadStories() {
-    if (!CONFIG.SHEET_ID || !CONFIG.API_KEY || CONFIG.SHEET_ID === 'YOUR_GOOGLE_SHEET_ID_HERE') {
+    if (!CONFIG.SHEET_ID || !CONFIG.API_KEY || CONFIG.SHEET_ID === 'Form%20Responses%201') {
         console.log('Configuration not set up yet');
         allStories = [];
         return;
