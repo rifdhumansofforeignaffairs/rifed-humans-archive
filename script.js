@@ -162,7 +162,35 @@ function displayStories() {
         `;
         return;
     }
+function generateStateChart() {
+    // Count states
+    const stateCounts = {};
+    allStories.forEach(story => {
+        if (story.homeState) {
+            stateCounts[story.homeState] = (stateCounts[story.homeState] || 0) + 1;
+        }
+    });
     
+    // Sort by count (highest first)
+    const sortedStates = Object.entries(stateCounts)
+        .sort(([,a], [,b]) => b - a)
+        .slice(0, 15); // Show top 15 states
+    
+    const chartContainer = document.getElementById('stateChart');
+    if (chartContainer && sortedStates.length > 0) {
+        chartContainer.innerHTML = sortedStates.map(([state, count]) => `
+            <div class="chart-item">
+                <div class="chart-label">${state}</div>
+                <div class="chart-bar-container">
+                    <div class="chart-bar">
+                        <div class="chart-bar-fill" style="width: ${(count / sortedStates[0][1]) * 100}%"></div>
+                    </div>
+                    <div class="chart-value">${count} personnel</div>
+                </div>
+            </div>
+        `).join('');
+    }
+}    
     container.innerHTML = filteredStories.map(story => `
         <div class="story-card" data-story-id="${story.id}">
             <div class="story-header">
